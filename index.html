@@ -566,8 +566,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
   /* Mock contact form: the email must be a real-looking address (one @, a domain with a dot and an ending); common typos get a fix suggestion. Never sends. */
   var MSG = {
-    lt: { empty: 'Įrašyk el. pašto adresą.', at: 'Adresui trūksta @ ženklo.', bad: 'El. pašto adresas neteisingas. Patikrink, ar nėra tarpų ir ar tik vienas @.', dom: 'Po @ turi būti domenas, pvz. gmail.com.', typo: 'Gal turėjai omenyje ', fix: 'Taip, pataisyk', name: 'Įrašyk vardą.' },
-    en: { empty: 'Please add your email address.', at: 'The address is missing an @ sign.', bad: 'This email address doesn’t look right. Check for spaces and use only one @.', dom: 'After @ there should be a domain, e.g. gmail.com.', typo: 'Did you mean ', fix: 'Yes, fix it', name: 'Please add your name.' }
+    lt: { empty: 'Įrašyk el. pašto adresą.', at: 'Adresui trūksta @ ženklo.', bad: 'El. pašto adresas neteisingas. Patikrink, ar nėra tarpų ir ar tik vienas @.', dom: 'Po @ turi būti domenas, pvz. gmail.com.', typo: 'Gal turėjai omenyje ', fix: 'Taip, pataisyk', name: 'Įrašyk vardą.', sent: 'Ačiū! Gavau tavo žinutę ir netrukus atsakysiu.', fail: 'Nepavyko išsiųsti. Pabandyk dar kartą arba parašyk el. paštu.' },
+    en: { empty: 'Please add your email address.', at: 'The address is missing an @ sign.', bad: 'This email address doesn’t look right. Check for spaces and use only one @.', dom: 'After @ there should be a domain, e.g. gmail.com.', typo: 'Did you mean ', fix: 'Yes, fix it', name: 'Please add your name.', sent: 'Thanks! I got your message and will get back to you soon.', fail: 'Sending failed. Please try again or send me an email.' }
   };
   var TYPO = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gnail.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.lt': 'gmail.com', 'gmaill.com': 'gmail.com', 'hotmial.com': 'hotmail.com', 'hotmail.con': 'hotmail.com', 'outlok.com': 'outlook.com', 'outlook.con': 'outlook.com', 'yahooo.com': 'yahoo.com', 'yaho.com': 'yahoo.com', 'icloud.con': 'icloud.com', 'inbox.lt.': 'inbox.lt' };
   function checkEmail(v, m) {
@@ -581,6 +581,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     if (TYPO[dom]) return { msg: m.typo + parts[0] + '@' + TYPO[dom] + '?', fix: parts[0] + '@' + TYPO[dom] };
     return null;
   }
+  /* Real sending only on the live site; in the design preview the form stays a mockup */
+  var FORM_URL = 'https://formspree.io/f/mgaabgvq';
+  var LIVE = /(^|\.)insighta\.lt$|\.github\.io$/.test(location.hostname);
   document.querySelectorAll('form.f').forEach(function (f) {
     var btn = f.querySelector('button[type="submit"]'), label = btn.textContent, err = f.querySelector('.err'), ok = f.querySelector('.ok');
     var mailEl = f.querySelector('input[type="email"]'), m = MSG[f.closest('[data-lang]').getAttribute('data-lang')] || MSG.lt;
@@ -610,7 +613,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       if (r) { showErr(r); mailEl.focus(); return; }
       err.hidden = true; mailEl.removeAttribute('aria-invalid');
       btn.disabled = true; btn.textContent = f.getAttribute('data-sending');
-      setTimeout(function () { btn.disabled = false; btn.textContent = label; ok.hidden = false; }, 700);
+      if (!LIVE) { setTimeout(function () { btn.disabled = false; btn.textContent = label; ok.hidden = false; }, 700); return; }
+      var msgEl = f.querySelector('textarea');
+      fetch(FORM_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ email: mailEl.value.trim(), message: msgEl.value.trim(), kalba: f.closest('[data-lang]').getAttribute('data-lang'), _subject: 'Insighta svetainė: nauja užklausa' }) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); ok.textContent = m.sent; ok.hidden = false; msgEl.value = ''; mailEl.value = ''; })
+        .catch(function () { err.textContent = m.fail; err.hidden = false; })
+        .then(function () { btn.disabled = false; btn.textContent = label; });
     });
   });
 
