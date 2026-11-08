@@ -296,6 +296,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .ins .intro { padding: 16px; gap: 12px; font-size: 15px; }
   .ins .scene .cta { padding: 11px 20px; font-size: 15px; }
   .ins #matc { left: -75vw; top: -70px; width: 250vw; }
+  .ins .hero h1 { font-size: clamp(17px, 5.5vw, 25px); }
+  .ins .hero h1 .l1, .ins .hero h1 .l2 { display: block; }
+  .ins:lang(en) .hero h1 { font-size: clamp(15px, 4.8vw, 22px); }
   .ins .bar.scrolled:not(.solid) { background: rgba(38,23,12,.62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 }
 @media (max-width: 820px) and (max-height: 720px) {
@@ -374,7 +377,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     </div>
 
     <header class="hero">
-      <h1 data-t="h1">Leisk procesams veikti sklandžiau, <em class="hl">o verslui augti greičiau</em>.</h1>
+      <h1 data-t="h1"><span class="l1">Leisk procesams veikti sklandžiau,</span> <span class="l2"><em class="hl">o verslui augti greičiau</em>.</span></h1>
       <div class="gap" id="gap"></div>
       <div class="intro pane">
         <p data-t="h2">Padedu mažoms ir vidutinėms įmonėms atsikratyti rankinio, pasikartojančio darbo. Sujungiu sistemas, sudėlioju logiką ir įvedu tvarką. Tai tiesiausias kelias į automatizaciją ir laiką, kurį susigrąžini sau.</p>
@@ -528,7 +531,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     b1: 'Booking', b2: 'Payment', b3: 'Client', b4: 'Owes?', b5: 'Weekly summary', b6: 'Reminder',
     t1: 'no', t2: 'yes', t3: 'after 3 days',
     note: 'Who hasn’t paid yet?',
-    h1: 'Let your processes run more smoothly, <em class="hl">and your business grow faster</em>.',
+    h1: '<span class="l1">Let your processes run more smoothly,</span> <span class="l2"><em class="hl">and your business grow faster</em>.</span>',
     h2: 'I help small and medium-sized businesses get rid of manual, repetitive work. I connect systems, map out the logic and bring order. It’s the most direct path to automation and to getting your time back.',
     h3: 'Get in touch', h4: 'Scroll down',
     navLabel: 'Sections', langLabel: 'Language'
