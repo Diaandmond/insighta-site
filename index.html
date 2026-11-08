@@ -623,7 +623,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       btn.disabled = true; btn.textContent = f.getAttribute('data-sending');
       if (!LIVE) { setTimeout(function () { btn.disabled = false; btn.textContent = label; ok.hidden = false; }, 700); return; }
       var msgEl = f.querySelector('textarea');
-      fetch(FORM_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ email: mailEl.value.trim(), message: msgEl.value.trim(), kalba: f.closest('[data-lang]').getAttribute('data-lang'), _subject: 'Insighta svetainė: nauja užklausa' }) })
+      fetch(FORM_URL, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ email: mailEl.value.trim(), message: msgEl.value.trim(), kalba: f.closest('[data-lang]').getAttribute('data-lang'), _subject: 'Insighta užklausa: ' + mailEl.value.trim() }) })
         .then(function (r) { if (!r.ok) throw new Error(r.status); ok.textContent = m.sent; ok.hidden = false; msgEl.value = ''; mailEl.value = ''; })
         .catch(function () { err.textContent = m.fail; err.hidden = false; })
         .then(function () { btn.disabled = false; btn.textContent = label; });
