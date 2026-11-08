@@ -292,7 +292,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 820px) {
   .ins .gap { height: 44svh; }
   .ins #sheet { --w: min(82vw, 52svh); }
-  .ins .hero { gap: 12px; padding-bottom: 20px; }
+  .ins .hero { gap: 12px; padding-bottom: 28px; min-height: 0; }
+  .ins #clip { display: none; }
   .ins .intro { padding: 16px; gap: 12px; font-size: 15px; }
   .ins .scene .cta { padding: 11px 20px; font-size: 15px; }
   .ins #matc { left: -75vw; top: -70px; width: 250vw; }
