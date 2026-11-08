@@ -689,7 +689,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var srcs = ['s1', 's2', 's3', 's4'].map(function (id) { return document.getElementById(id); });
   var WIDE = [[-.36, -.04, -8], [.11, -.33, 6], [.145, .4, 5], [.285, -.03, -7]];
-  var NARROW = [[-.36, -.2, -9], [.37, -.22, 7], [-.32, .25, -6], [.33, .27, 8]];
+  var NARROW = [[-.29, -.2, -5], [.37, -.22, 7], [-.27, .25, -4], [.33, .27, 8]];
   var cur = 0, queued = false;
   function clamp(v) { return Math.max(0, Math.min(1, v)); }
   function ease(v) { return v * v * (3 - 2 * v); }
