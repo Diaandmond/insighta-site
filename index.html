@@ -288,6 +288,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ins .quick input:focus, .ins .quick textarea:focus { outline: none; border-bottom: 2px solid var(--accent); padding-bottom: 9px; }
 .ins .thanks .fix { font: inherit; font-size: 15px; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .ins .quick input[aria-invalid="true"] { border-bottom-color: #b3261e; }
+.ins img.me-photo { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border: 0; background: var(--shade); }
 /* Phone layout: intro and button fit on the first screen, bar readable over the desk, compact about and contact */
 @media (max-width: 820px) {
   .ins .gap { height: 44svh; }
@@ -429,7 +430,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         </section>
         <section class="row full about" data-sec="apie">
           <div class="about-wrap">
-            <div class="me-photo"><span>Tavo nuotrauka</span></div>
+            <img class="me-photo" src="deimante.jpg" alt="Deimantė Andraitytė" width="800" height="800" loading="lazy">
             <div class="about-text">
               <h2 class="kicker">Apie mane</h2>
               <p class="hello">Labas, aš Deimantė.</p>
@@ -494,7 +495,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         </section>
         <section class="row full about" data-sec="apie">
           <div class="about-wrap">
-            <div class="me-photo"><span>Your photo</span></div>
+            <img class="me-photo" src="deimante.jpg" alt="Deimantė Andraitytė" width="800" height="800" loading="lazy">
             <div class="about-text">
               <h2 class="kicker">About me</h2>
               <p class="hello">Hi, I’m Deimantė.</p>
