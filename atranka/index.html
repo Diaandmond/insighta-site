@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Insighta · Atranka</title>
+<meta name="description" content="Trumpa forma įmonėms, kurias pakviečiau į atranką.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;700;800&display=swap">
+<style>
+:root {
+  --paper: #f6f7f5;
+  --ink: #18201e;
+  --ink2: #3a4542;
+  --muted: #66716d;
+  --edge: #dde1dc;
+  --bar: #c9cfc8;
+  --accent: #c2621f;
+  --card: #ffffff;
+  --sans: "Schibsted Grotesk", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 18px; line-height: 1.6; }
+body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); }
+a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+a:hover, a:focus-visible { color: var(--accent); }
+header { max-width: 640px; width: 100%; margin: 0 auto; padding: 22px 0 0; }
+.logo { font-size: 32px; font-weight: 800; letter-spacing: -.05em; line-height: 1; text-decoration: none; color: var(--ink); }
+.logo i { font-style: normal; color: var(--accent); }
+main { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 48px 0 56px; }
+h1 { margin: 0 0 14px; font-size: clamp(30px, 6vw, 44px); line-height: 1.12; letter-spacing: -.03em; font-weight: 800; text-wrap: balance; }
+.lead { margin: 0 0 32px; color: var(--ink2); max-width: 34em; }
+form { display: grid; gap: 22px; }
+label { display: grid; gap: 6px; font-size: 15px; font-weight: 500; color: var(--ink); }
+label small { font-weight: 400; color: var(--muted); font-size: 14px; }
+input, textarea { font: inherit; font-size: 17px; color: var(--ink); background: var(--card); border: 1px solid var(--edge); padding: 12px 13px; border-radius: 0; width: 100%; }
+textarea { min-height: 130px; resize: vertical; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #b3261e; }
+button { justify-self: start; font: inherit; font-size: 16px; font-weight: 700; background: var(--ink); color: var(--paper); border: 0; padding: 13px 24px; cursor: pointer; transition: background .15s ease; }
+button:hover, button:focus-visible { background: var(--accent); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .5; cursor: not-allowed; background: var(--ink); }
+.msg { margin: 0; font-size: 16px; border-left: 3px solid var(--accent); padding-left: 12px; }
+.msg.err { border-left-color: #b3261e; }
+.note { margin: 0; font-size: 14px; color: var(--muted); }
+.done { display: grid; gap: 12px; }
+.done h2 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
+.done p { margin: 0; color: var(--ink2); }
+footer { max-width: 640px; width: 100%; margin: 0 auto; border-top: 1px solid var(--edge); padding: 18px 0 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 14px; color: var(--muted); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header><a class="logo" href="/">Insighta<i>.</i></a></header>
+
+<main>
+  <div id="start">
+    <h1>Norite sužinoti daugiau?</h1>
+    <p class="lead">Parašykite, kas jūsų versle labiausiai stringa, ir el. paštą, kuriuo galiu atsakyti. Užtruks 2 min.</p>
+
+    <form id="f" novalidate>
+      <label for="problem">Kokia, jūsų manymu, didžiausia problema jūsų versle?
+        <small>Užtenka kelių sakinių, savais žodžiais.</small>
+        <textarea id="problem" name="problema" required></textarea>
+      </label>
+      <label for="email">El. paštas, kuriuo galiu jums parašyti
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </label>
+      <p class="msg err" id="err" role="alert" hidden></p>
+      <button type="submit" id="btn">Siųsti</button>
+      <p class="note">El. paštą naudosiu tik atsakyti dėl šios atrankos.</p>
+    </form>
+  </div>
+
+  <div class="done" id="done" role="status" hidden>
+    <h2>Ačiū, gavau!</h2>
+    <p>Perskaitysiu ir parašysiu jums el. paštu.</p>
+  </div>
+</main>
+
+<footer><span>MB „Insighta“, Vilnius · <a href="mailto:deimante@insighta.lt">deimante@insighta.lt</a></span><span>2026</span></footer>
+
+<script>
+(function () {
+  var FORM_URL = 'https://formspree.io/f/mgaabgvq';
+  var LIVE = /(^|\.)insighta\.lt$|\.github\.io$/.test(location.hostname);
+  /* Įmonės kodas iš asmeninės nuorodos laiške, pvz. insighta.lt/atranka/?i=305636076 */
+  var company = (new URLSearchParams(location.search).get('i') || '').replace(/[^0-9A-Za-z_-]/g, '').slice(0, 40);
+  var f = document.getElementById('f'), btn = document.getElementById('btn'), err = document.getElementById('err');
+  var problem = document.getElementById('problem'), email = document.getElementById('email');
+  var TYPO = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gnail.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.lt': 'gmail.com', 'gmaill.com': 'gmail.com', 'hotmial.com': 'hotmail.com', 'hotmail.con': 'hotmail.com', 'outlok.com': 'outlook.com', 'outlook.con': 'outlook.com', 'yahooo.com': 'yahoo.com', 'yaho.com': 'yahoo.com', 'icloud.con': 'icloud.com' };
+
+  function checkEmail(v) {
+    if (!v) return 'Įrašykite el. pašto adresą.';
+    if (/\s/.test(v)) return 'El. pašto adresas neteisingas. Patikrinkite, ar nėra tarpų.';
+    var p = v.split('@');
+    if (p.length === 1) return 'Adresui trūksta @ ženklo.';
+    if (p.length > 2 || !p[0]) return 'El. pašto adresas neteisingas. Turi būti tik vienas @.';
+    var dom = p[1].toLowerCase();
+    if (!/^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(dom)) return 'Po @ turi būti domenas, pvz. imone.lt.';
+    if (TYPO[dom]) return 'Gal turėjote omenyje ' + p[0] + '@' + TYPO[dom] + '?';
+    return '';
+  }
+  function fail(msg, el) {
+    err.textContent = msg; err.hidden = false;
+    if (el) { el.setAttribute('aria-invalid', 'true'); el.focus(); }
+  }
+  [problem, email].forEach(function (el) {
+    el.addEventListener('input', function () { el.removeAttribute('aria-invalid'); err.hidden = true; });
+  });
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.hidden = true;
+    if (!problem.value.trim()) return fail('Parašykite bent kelis žodžius apie problemą.', problem);
+    var m = checkEmail(email.value.trim());
+    if (m) return fail(m, email);
+    btn.disabled = true; btn.textContent = 'Siunčiama…';
+    function ok() {
+      document.getElementById('start').hidden = true;
+      document.getElementById('done').hidden = false;
+    }
+    if (!LIVE) { setTimeout(ok, 600); return; }
+    fetch(FORM_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email.value.trim(),
+        problema: problem.value.trim(),
+        imones_kodas: company || 'nenurodyta',
+        saltinis: 'atranka',
+        _subject: 'Atranka: ' + email.value.trim() + (company ? ' (' + company + ')' : '')
+      })
+    })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); ok(); })
+      .catch(function () {
+        fail('Nepavyko išsiųsti. Pabandykite dar kartą arba parašykite deimante@insighta.lt.');
+        btn.disabled = false; btn.textContent = 'Siųsti';
+      });
+  });
+})();
+</script>
+</body>
+</html>
