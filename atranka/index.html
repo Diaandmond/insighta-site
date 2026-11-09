@@ -125,9 +125,11 @@ footer { max-width: 640px; width: 100%; margin: 0 auto; border-top: 1px solid va
     }
     /* Tik tai, ką žmogus pats įrašė; įmonės kodas tik jei jis yra nuorodoje */
     function payload() {
-      var d = { email: email.value.trim(), problema: problem.value.trim() };
-      if (company) d.imones_kodas = company;
-      d._subject = 'Atranka: ' + d.email + (company ? ' (' + company + ')' : '');
+      var mail = email.value.trim();
+      /* Laukų pavadinimai rodomi laiške; _replyto, kad „Atsakyti“ rašytų jiems */
+      var d = { 'Didžiausia problema': problem.value.trim(), 'El. paštas': mail, _replyto: mail };
+      if (company) d['Įmonės kodas'] = company;
+      d._subject = 'Atranka: ' + mail + (company ? ' (' + company + ')' : '');
       return d;
     }
     if (!LIVE) { setTimeout(ok, 600); return; }
