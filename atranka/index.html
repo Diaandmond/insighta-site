@@ -123,17 +123,18 @@ footer { max-width: 640px; width: 100%; margin: 0 auto; border-top: 1px solid va
       document.getElementById('start').hidden = true;
       document.getElementById('done').hidden = false;
     }
+    /* Tik tai, ką žmogus pats įrašė; įmonės kodas tik jei jis yra nuorodoje */
+    function payload() {
+      var d = { email: email.value.trim(), problema: problem.value.trim() };
+      if (company) d.imones_kodas = company;
+      d._subject = 'Atranka: ' + d.email + (company ? ' (' + company + ')' : '');
+      return d;
+    }
     if (!LIVE) { setTimeout(ok, 600); return; }
     fetch(FORM_URL, {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email.value.trim(),
-        problema: problem.value.trim(),
-        imones_kodas: company || 'nenurodyta',
-        saltinis: 'atranka',
-        _subject: 'Atranka: ' + email.value.trim() + (company ? ' (' + company + ')' : '')
-      })
+      body: JSON.stringify(payload())
     })
       .then(function (r) { if (!r.ok) throw new Error(r.status); ok(); })
       .catch(function () {
