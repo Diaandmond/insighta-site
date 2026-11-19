@@ -54,6 +54,8 @@ button:disabled { opacity: .5; cursor: not-allowed; background: var(--ink); }
 .msg .fix { font-size: 15px; font-weight: 600; background: none; color: var(--ink); padding: 12px 4px; margin: -12px 0; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .msg .fix:hover, .msg .fix:focus-visible { background: none; color: var(--accent); }
 .note { margin: 0; font-size: 14px; color: var(--muted); }
+.consent { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; font-weight: 400; color: var(--ink2); cursor: pointer; }
+.consent input { width: 20px; height: 20px; margin: 3px 0 0; padding: 0; flex: none; accent-color: var(--accent); cursor: pointer; }
 .done { display: grid; gap: 12px; }
 .done h2 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
 .done p { margin: 0; color: var(--ink2); }
@@ -77,9 +79,13 @@ footer { max-width: 640px; width: 100%; margin: 0 auto; border-top: 1px solid va
       <label for="email">El. paštas, kuriuo galime jums parašyti
         <input id="email" name="email" type="email" autocomplete="email" required>
       </label>
+      <label class="consent" for="consent">
+        <input id="consent" name="sutikimas" type="checkbox">
+        <span>Sutinku, kad Insighta atsiųstų man pavyzdžių ir pasiūlymų el. paštu. Galėsiu bet kada atsisakyti.</span>
+      </label>
       <p class="msg err" id="err" role="alert" hidden></p>
       <button type="submit" id="btn">Siųsti</button>
-      <p class="note">El. paštą naudosime tik atsakymui dėl šios atrankos.</p>
+      <p class="note">El. paštą naudosime atsakymui dėl šios atrankos. Pavyzdžių ir pasiūlymų siųsime tik pažymėjus varnelę.</p>
     </form>
   </div>
 
@@ -143,7 +149,7 @@ footer { max-width: 640px; width: 100%; margin: 0 auto; border-top: 1px solid va
     function payload() {
       var mail = email.value.trim();
       /* Laukų pavadinimai rodomi laiške; _replyto, kad „Atsakyti“ rašytų jiems */
-      var d = { 'Didžiausia problema': problem.value.trim(), 'El. paštas': mail, _replyto: mail };
+      var d = { 'Didžiausia problema': problem.value.trim(), 'El. paštas': mail, 'Sutikimas gauti pavyzdžius ir pasiūlymus': document.getElementById('consent').checked ? 'Taip' : 'Ne', _replyto: mail };
       if (company) d['Įmonės kodas'] = company;
       d._subject = 'Atranka: ' + mail + (company ? ' (' + company + ')' : '');
       return d;
